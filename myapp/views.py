@@ -2,7 +2,6 @@ import datetime
 import uuid
 import re
 from io import BytesIO
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
@@ -49,11 +48,6 @@ def login_request(request):
         return render(request, 'myapp/login.html', {'form1': form1, 'form2': form2})
 
 
-@login_required
-def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reversed(('login')))
-
 
 @login_required
 def homepage(request):
@@ -61,6 +55,11 @@ def homepage(request):
     types = AdventureType.objects.all()
     events = CreateEvent.objects.all()
     return render(request=request, template_name="myapp/homepage.html", context={"msg": msg, 'types': types})
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reversed(('login')))
 
 
 def create_client(request):
